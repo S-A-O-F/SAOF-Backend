@@ -1,4 +1,4 @@
-![Banner](https://github.com/JSisques/Alexa-Computer-Assistant/blob/dev/resources/img/banner.png)
+![Banner](https://github.com/S-A-O-F/SAOF-Backend/blob/master/resources/img/SaofBanner.png)
 # S.A.O.F. Backend
 
 ## Quick Start
