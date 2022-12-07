@@ -2,9 +2,11 @@
   "name": "saof-backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "App.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha --recursive --exit",
+    "start": "node App.js",
+    "dev": "nodemon App.js"
   },
   "repository": {
     "type": "git",
@@ -16,5 +18,18 @@
   "bugs": {
     "url": "https://github.com/S-A-O-F/SAOF-Backend/issues"
   },
-  "homepage": "https://github.com/S-A-O-F/SAOF-Backend#readme"
+  "homepage": "https://github.com/S-A-O-F/SAOF-Backend#readme",
+  "devDependencies": {
+    "chai": "^4.3.7",
+    "chai-http": "^4.3.0",
+    "mocha": "^10.1.0",
+    "nodemon": "^2.0.20",
+    "supertest": "^6.3.2"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "moment": "^2.29.4",
+    "winston": "^3.8.2"
+  }
 }
