@@ -5,7 +5,7 @@ const packageJson = require('../../../package.json')
 
 module.exports = {
 
-    async getStatus(req, res){
+    getStatus(req, res){
         
         // Getting request info
         var ip = req.ip;
@@ -20,6 +20,7 @@ module.exports = {
 
         // Setting the response
         res.status(200)
+        res.setHeader('Content-Type', 'application/json')
 
         return res.send({
             "Author": packageJson.author,
