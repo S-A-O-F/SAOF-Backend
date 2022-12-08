@@ -1,10 +1,19 @@
+const statusError = require("../../constants/statusError")
+const statusSuccess = require("../../constants/statusSuccess")
 const logger = require("../../util/logger")
+
+const dao = require('./dao')
 
 module.exports = {
     
     async validateData(body){
+
         logger.info("Validanting data")
-        var response = false
+
+        var response = {
+            isValid: false,
+            response: ""
+        }
 
         const email = body.email
         const password = body.password
@@ -12,14 +21,46 @@ module.exports = {
         const isNotEmpty = email && password 
         logger.debug("Are email and password provided? " + isNotEmpty)
 
-        if(isNotEmpty){
-            const isValidEmail = await this.verifyEmail(email)
-            const isValidPassword = await this.verifyPassword(password)
+        response.response = statusError.NO_CREDENTIALS_PROVIDED
 
-            response = isValidEmail && isValidPassword
-            logger.debug("Are email and password valid? " + response)
+        if(isNotEmpty){
+            
+            const isValidEmail = await this.verifyEmail(email)
+            response.response = isValidEmail ? response.response : statusError.NOT_VALID_EMAIL
+
+            const isValidPassword = await this.verifyPassword(password)
+            response.response = isValidPassword ? response.response : statusError.NOT_VALID_PASSWORD
+
+            response.isValid = isValidEmail && isValidPassword
+            logger.debug("Are email and password valid? " + response.isValid)
         }
         
+        return response
+    },
+
+    async validateDataRegister(body){
+        
+        logger.info("Validanting data register")
+
+        var response = await this.validateData(body)
+
+        const isValidateData = response.isValid
+
+        if(isValidateData){
+            
+            const password = body.password
+            const repeatPassword = body.repeatPassword
+    
+            if(repeatPassword){
+                const hasTheSamePassword = repeatPassword == password
+                response.response = hasTheSamePassword ? response.response : statusError.PASSWORDS_NOT_MACHING
+                response.isValid = isValidateData && hasTheSamePassword
+            }else{
+                response.isValid = false
+                response.response = statusError.NOT_REPEAT_PASSWORD_PROVIDED
+            }
+        }
+
         return response
     },
 
@@ -59,5 +100,27 @@ module.exports = {
         })
 
         return user
+    },
+
+    async createUserByMail(email, password){
+        logger.info("Creating a user by email")
+
+        var response = {
+            isValid: false,
+            response: "",
+        }
+
+        const oldUser = await dao.checkIfUserExists(email)
+
+        if (oldUser){
+            response.response = statusError.USER_ALREADY_EXISTS
+        } else{
+            const user = await dao.createUserByEmail(email, password)
+            response.isValid = true
+            response.response = statusSuccess.USER_CREATED
+            response.user = user
+        }
+
+        return response
     }
 }

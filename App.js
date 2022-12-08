@@ -4,6 +4,11 @@ require('dotenv').config();
 // Setup the logger
 const logger = require('./src/util/logger')
 
+// Database connection
+const mongo = require('./src/config/database')
+
+mongo.connect()
+
 // Configure express
 const express = require('express')
 const app = express()

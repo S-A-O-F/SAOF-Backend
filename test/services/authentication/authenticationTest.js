@@ -26,7 +26,7 @@ describe('Authentication test: ', async () => {
      */
     it('Check auth', (done) => {
         chai.request(URL)
-            .post(ENDPOINT)
+            .get(ENDPOINT)
             .send()
             .end((err, res) => {
                 res.should.have.status(statusCode.BAD_REQUEST)
@@ -41,7 +41,7 @@ describe('Authentication test: ', async () => {
      */
     it('Check only email sended', (done) => {
         chai.request(URL)
-            .post(ENDPOINT)
+            .get(ENDPOINT)
             .send({
                 "email": "example@mail.com"
             })
@@ -58,7 +58,7 @@ describe('Authentication test: ', async () => {
      */
     it('Check only email not @', (done) => {
         chai.request(URL)
-            .post(ENDPOINT)
+            .get(ENDPOINT)
             .send({
                 "email": "examplemail.com",
                 "password": "JohnDoe73.."
@@ -76,7 +76,7 @@ describe('Authentication test: ', async () => {
      */
     it('Check only email not .', (done) => {
         chai.request(URL)
-            .post(ENDPOINT)
+            .get(ENDPOINT)
             .send({
                 "email": "example@mailcom",
                 "password": "JohnDoe73.."
@@ -94,7 +94,7 @@ describe('Authentication test: ', async () => {
      */
     it('Check only password sended', (done) => {
         chai.request(URL)
-            .post(ENDPOINT)
+            .get(ENDPOINT)
             .send({
                 "password": 1234
             })
