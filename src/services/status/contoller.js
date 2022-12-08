@@ -23,8 +23,8 @@ module.exports = {
         res.setHeader('Content-Type', 'application/json')
 
         return res.send({
-            "Author": packageJson.author,
-            "Version": packageJson.version
+            "author": packageJson.author,
+            "version": packageJson.version
         })
     }
 }

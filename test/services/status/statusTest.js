@@ -1,5 +1,7 @@
 require('dotenv').config();
 
+const logger = require('../../../src/util/logger')
+
 const app = require('../../../App')
 const chai = require('chai');
 const chaiHttp = require('chai-http');
@@ -9,6 +11,9 @@ chai.use(chaiHttp)
 
 const ENDPOINT = "/status"
 const URL = process.env.URL
+
+// Disable the logs
+logger.silent = true
 
 describe('Status test: ', async () => {
     

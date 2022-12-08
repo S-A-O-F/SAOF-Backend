@@ -9,7 +9,11 @@ const express = require('express')
 const app = express()
 const port = process.env.PORT
 
+// Configure to receive JSON
+app.use(express.json());
+
 // Define the routes
+app.use(require('./src/services/authentication/router'))
 app.use(require('./src/services/status/router'))
 
 // Start the server
