@@ -5,7 +5,7 @@ const packageJson = require('../../../package.json')
 
 module.exports = {
 
-    getStatus(req, res){
+    async getStatus(req, res){
         
         // Getting request info
         var ip = req.ip;
