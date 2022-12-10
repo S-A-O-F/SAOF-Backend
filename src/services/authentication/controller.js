@@ -3,7 +3,6 @@ const statusCode = require('../../constants/statusCode')
 const statusError = require('../../constants/statusError')
 
 const model = require('./model')
-const { response } = require('express')
 
 module.exports = {
 

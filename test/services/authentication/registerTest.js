@@ -128,4 +128,26 @@ describe('Authentication register test: ', async () => {
             })
         done()
     });
+
+    
+    /**
+     * Check the following things:
+     * - We send a JSON only with the email field 
+     *   and the endopoint returns a 400 status
+     * - Returns a JSON with the properties "error" and "status"
+     * - Error field must contains NO_CREDENTIALS_PROVIDED constant
+     * - Status field must be BAD_REQUEST  
+     */
+        it('Only password sended', (done) => {
+            chai.request(URL)
+                .post(ENDPOINT)
+                .send({
+                    "password": 1234
+                })
+                .end((err, res) => {
+                    res.body.should.be.a('object');
+                    res.body.should.have.property('response').eql(statusError.NO_CREDENTIALS_PROVIDED);
+                })
+            done()
+        });
 });
