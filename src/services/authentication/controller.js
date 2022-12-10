@@ -20,7 +20,7 @@ module.exports = {
                 logger.error("Not all data was sended")
                 return res.status(statusCode.BAD_REQUEST).send({
                     "status": statusCode.BAD_REQUEST,
-                    "error": validatedResponse.response
+                    "response": validatedResponse.response
                 })
             } else {
                 // Obtain the user
