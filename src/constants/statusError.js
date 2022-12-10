@@ -5,5 +5,9 @@ module.exports = Object.freeze({
     NOT_VALID_PASSWORD: 'Not a valid password',
     PASSWORDS_NOT_MACHING: 'The passwords dont match',
     NOT_REPEAT_PASSWORD_PROVIDED: 'Repeat password has not been provided',
-    USER_ALREADY_EXISTS: 'The email already exists, please login'
+    USER_ALREADY_EXISTS: 'The email already exists, please login',
+    USER_DOESNT_EXISTS: 'The email does not exists, please register',
+    INVALID_CREDENTIALS: "Invalid credentials",
+    NO_TOKEN_PROVIDED: "No token provided",
+    INVALID_TOKEN: "Invalid token",
 });

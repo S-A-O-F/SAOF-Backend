@@ -28,10 +28,15 @@ module.exports = {
 
                 const user = await model.getUserByMail(email, password)
 
+                if(user.response){
+                    return res.status(statusCode).send(user)
+                }
+
                 return res.status(statusCode.SUCCESS).send(user)
             }
 
         } catch (error) {
+            logger.error(error)
             return res.status(statusCode.INTERNAL_SERVER_ERROR).send({
                 "response": error
             })
@@ -75,6 +80,7 @@ module.exports = {
             }
 
         } catch (error) {
+            logger.error(error)
             return res.status(statusCode.INTERNAL_SERVER_ERROR).send({
                 "error": error
             })

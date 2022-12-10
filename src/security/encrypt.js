@@ -18,7 +18,6 @@ module.exports = {
      *          are the same
      */
     compareHash(inputText, expectedHash){
-        const inputTextHash = this.hashText(inputText)
-        return bcrypt.compareSync(inputTextHash, expectedHash)
+        return bcrypt.compareSync(inputText, expectedHash)
     }
 }

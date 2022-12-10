@@ -1,5 +1,9 @@
+const statusCode = require("../../constants/statusCode")
 const statusError = require("../../constants/statusError")
 const statusSuccess = require("../../constants/statusSuccess")
+const WebError = require("../../model/web/webError")
+const encrypt = require("../../security/encrypt")
+const jwtManager = require("../../security/jwtManager")
 const logger = require("../../util/logger")
 
 const dao = require('./dao')
@@ -66,6 +70,7 @@ module.exports = {
 
     async verifyEmail(email){
         logger.info("Verifying email")
+
         // Email has to contain a "."
         const hasDot = email.includes(".")
         logger.debug("Email contains a dot? " + hasDot)
@@ -79,6 +84,7 @@ module.exports = {
 
     async verifyPassword(password){
         logger.info("Verifying password")
+
         // Password has to be longer than 8 characters
         const isValidLength = password.length >= 8
         logger.debug("Password length: " + password.length)
@@ -94,10 +100,29 @@ module.exports = {
     async getUserByMail(email, password){
         logger.info("Getting user by email")
 
-        const user = JSON.stringify({
-            "username": "JohnDoe",
-            "email": email
-        })
+        const user = await dao.checkIfUserExists(email)
+
+        if(!user){
+            logger.info("User with email " + email + " not founded")
+            return new WebError(statusCode.BAD_REQUEST, statusError.USER_DOESNT_EXISTS).toJson()
+        }
+
+        // Compare input password and database password from the user
+        const arePasswordsEqual = encrypt.compareHash(password, user.password)
+        logger.debug("Are passwords equal: " + arePasswordsEqual)
+
+        if(!arePasswordsEqual){
+            logger.info("The passwords are not the same")
+            return {
+                "status": statusCode.BAD_REQUEST,
+                "response": statusError.INVALID_CREDENTIALS
+            }
+        }
+
+        // Create token
+        const token = jwtManager.signUserToken(user._id, user.email)
+        logger.debug("Token generated: " + token)
+        user.token = token
 
         return user
     },
@@ -115,7 +140,18 @@ module.exports = {
         if (oldUser){
             response.response = statusError.USER_ALREADY_EXISTS
         } else{
-            const user = await dao.createUserByEmail(email, password)
+            // Create user in the database
+            const hashedPassword = encrypt.hashText(password)
+            const user = await dao.createUserByEmail(email, hashedPassword)
+            logger.debug("User created with ID: " + user._id)
+
+            // Create the user token
+            const token = jwtManager.signUserToken(user._id, user.email)
+            logger.debug("Token generated: " + token)
+
+            // Save the user token
+            user.token = token
+
             response.isValid = true
             response.response = statusSuccess.USER_CREATED
             response.user = user
