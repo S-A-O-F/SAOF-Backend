@@ -31,7 +31,7 @@ module.exports = {
     },
 
     async verifyEmail(email){
-        logger.info("Verifying email")
+        logger.info("Entering in verifyEmail")
 
         // Email has to contain a "."
         const hasDot = email.includes(".")
@@ -45,7 +45,7 @@ module.exports = {
     },
 
     async verifyPassword(password){
-        logger.info("Verifying password")
+        logger.info("Entering in verifyPassword")
 
         // Password has to be longer than 8 characters
         const isValidLength = password.length >= 8
@@ -61,29 +61,23 @@ module.exports = {
     },
 
     async getUserByMail(email){
-        logger.info("Getting user by email")
-
-        const user = await dao.checkIfUserExists(email)
-
-        return user
+        logger.info("Entering in getUserByMail")
+        return await dao.checkIfUserExists(email)
     },
 
     async checkPasswords(inputPassword, databasePassword){
+        logger.info("Entering in checkPasswords")
         return encrypt.compareHash(inputPassword, databasePassword)
     },
 
     async createUserToken(userId, email){
+        logger.info("Entering in createUserToken")
         return jwtManager.signUserToken(userId, email)
     },
 
     async createUserByMail(email, password){
         logger.info("Entering in createUserByMail")
-
-        // Create user in the database
         const hashedPassword = encrypt.hashText(password)
-        const user = await dao.createUserByEmail(email, hashedPassword)
-        logger.debug("User created with ID: " + user._id)
-
-        return user
+        return await dao.createUserByEmail(email, hashedPassword)
     }
 }
