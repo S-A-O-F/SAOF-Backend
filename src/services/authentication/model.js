@@ -1,7 +1,7 @@
 const statusCode = require("../../constants/statusCode")
 const statusError = require("../../constants/statusError")
 const statusSuccess = require("../../constants/statusSuccess")
-const WebError = require("../../model/web/webError")
+const webError = require("../../model/web/webError")
 const encrypt = require("../../security/encrypt")
 const jwtManager = require("../../security/jwtManager")
 const logger = require("../../util/logger")
@@ -10,62 +10,24 @@ const dao = require('./dao')
 
 module.exports = {
     
-    async validateData(body){
-
-        logger.info("Validanting data")
-
-        var response = {
-            isValid: false,
-            response: ""
-        }
-
+    async checkRequestBodyLogin(body){
+        logger.info("Entering in checkRequestBodyLogin")
         const email = body.email
         const password = body.password
-
-        const isNotEmpty = email && password 
-        logger.debug("Are email and password provided? " + isNotEmpty)
-
-        response.response = statusError.NO_CREDENTIALS_PROVIDED
-
-        if(isNotEmpty){
-            
-            const isValidEmail = await this.verifyEmail(email)
-            response.response = isValidEmail ? response.response : statusError.NOT_VALID_EMAIL
-
-            const isValidPassword = await this.verifyPassword(password)
-            response.response = isValidPassword ? response.response : statusError.NOT_VALID_PASSWORD
-
-            response.isValid = isValidEmail && isValidPassword
-            logger.debug("Are email and password valid? " + response.isValid)
-        }
-        
-        return response
+        return !email || !password 
     },
 
-    async validateDataRegister(body){
-        
-        logger.info("Validanting data register")
+    async checkRequestBodyRegister(body){
+        logger.info("Entering in checkRequestBodyRegister")
+        const email = body.email
+        const password = body.password
+        const repeatPassword = body.repeatPassword
+        return !email || !password || !repeatPassword
+    },
 
-        var response = await this.validateData(body)
-
-        const isValidateData = response.isValid
-
-        if(isValidateData){
-            
-            const password = body.password
-            const repeatPassword = body.repeatPassword
-    
-            if(repeatPassword){
-                const hasTheSamePassword = repeatPassword == password
-                response.response = hasTheSamePassword ? response.response : statusError.PASSWORDS_NOT_MACHING
-                response.isValid = isValidateData && hasTheSamePassword
-            }else{
-                response.isValid = false
-                response.response = statusError.NOT_REPEAT_PASSWORD_PROVIDED
-            }
-        }
-
-        return response
+    async checkRepeatPassword(password, repeatPassword){
+        logger.info("Entering in checkRepeatPassword")
+        return repeatPassword == password
     },
 
     async verifyEmail(email){
@@ -91,72 +53,37 @@ module.exports = {
         logger.debug("Password has the corrent length: " + isValidLength)
 
         // Has to have special characters
+        // TODO: Regex for check the pass
         const isValidCharacters = true
         logger.debug("Password has the corrent characters: " + isValidCharacters)
 
         return isValidLength && isValidCharacters
     },
 
-    async getUserByMail(email, password){
+    async getUserByMail(email){
         logger.info("Getting user by email")
 
         const user = await dao.checkIfUserExists(email)
 
-        if(!user){
-            logger.info("User with email " + email + " not founded")
-            return new WebError(statusCode.BAD_REQUEST, statusError.USER_DOESNT_EXISTS).toJson()
-        }
-
-        // Compare input password and database password from the user
-        const arePasswordsEqual = encrypt.compareHash(password, user.password)
-        logger.debug("Are passwords equal: " + arePasswordsEqual)
-
-        if(!arePasswordsEqual){
-            logger.info("The passwords are not the same")
-            return {
-                "status": statusCode.BAD_REQUEST,
-                "response": statusError.INVALID_CREDENTIALS
-            }
-        }
-
-        // Create token
-        const token = jwtManager.signUserToken(user._id, user.email)
-        logger.debug("Token generated: " + token)
-        user.token = token
-
         return user
     },
 
+    async checkPasswords(inputPassword, databasePassword){
+        return encrypt.compareHash(inputPassword, databasePassword)
+    },
+
+    async createUserToken(userId, email){
+        return jwtManager.signUserToken(userId, email)
+    },
+
     async createUserByMail(email, password){
-        logger.info("Creating a user by email")
+        logger.info("Entering in createUserByMail")
 
-        var response = {
-            isValid: false,
-            response: "",
-        }
+        // Create user in the database
+        const hashedPassword = encrypt.hashText(password)
+        const user = await dao.createUserByEmail(email, hashedPassword)
+        logger.debug("User created with ID: " + user._id)
 
-        const oldUser = await dao.checkIfUserExists(email)
-
-        if (oldUser){
-            response.response = statusError.USER_ALREADY_EXISTS
-        } else{
-            // Create user in the database
-            const hashedPassword = encrypt.hashText(password)
-            const user = await dao.createUserByEmail(email, hashedPassword)
-            logger.debug("User created with ID: " + user._id)
-
-            // Create the user token
-            const token = jwtManager.signUserToken(user._id, user.email)
-            logger.debug("Token generated: " + token)
-
-            // Save the user token
-            user.token = token
-
-            response.isValid = true
-            response.response = statusSuccess.USER_CREATED
-            response.user = user
-        }
-
-        return response
+        return user
     }
 }

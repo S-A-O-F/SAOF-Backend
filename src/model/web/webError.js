@@ -1,13 +1,8 @@
-class WebError {
-    constructor(status, response) {
-      this.status = status;
-      this.response = response;
-    }
-
-    toJson(){
+module.exports = {
+    generateWebError(status, response){
         return {
-            "status": this.status,
-            "response": this.response
+            "status": status,
+            "response": response
         }
     }
   }

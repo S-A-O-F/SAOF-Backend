@@ -10,6 +10,6 @@ module.exports = {
             {user_id: id, email},
             process.env.TOKEN_KEY,
             {expiresIn: "2h",}
-        )
+        )   
     }
 }
