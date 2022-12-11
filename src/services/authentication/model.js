@@ -27,7 +27,7 @@ module.exports = {
 
     async checkRequestBodyDelete(body){
         logger.info("Entering in checkRequestBodyDelete")
-        return body.email
+        return !body.email
     },
 
     async checkRepeatPassword(password, repeatPassword){
@@ -88,6 +88,6 @@ module.exports = {
 
     async deleteUser(user){
         logger.info("Entering in deleteUser")
-        return await dao.deleteUser(user._id)
+        return await dao.deleteUser(user)
     }
 }

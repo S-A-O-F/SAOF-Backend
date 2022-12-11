@@ -109,7 +109,7 @@ module.exports = {
             }
 
             // Check if the user already exists in the database
-            const databaseUser = await model.checkIfUserExists(email)
+            const databaseUser = await model.getUserByMail(email)
 
             if(databaseUser){
                 response = webError.generateWebError(statusCode.BAD_REQUEST, statusError.USER_ALREADY_EXISTS)
@@ -177,7 +177,9 @@ module.exports = {
                 response = webError.generateWebError(statusCode.BAD_REQUEST, statusError.USER_NOT_DELETED)
                 return res.status(statusCode.BAD_REQUEST).send(response)
             }
- 
+
+            user.active = false
+
             return res.status(statusCode.ACCEPTED).send(user)
 
         } catch (error) {
