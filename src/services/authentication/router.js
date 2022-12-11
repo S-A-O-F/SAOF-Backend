@@ -4,7 +4,7 @@ const authMiddleware = require('../../middleware/auth')
 
 const router = express.Router()
 
-router.get('/auth', authMiddleware, controller.login)
+router.get('/auth', controller.login)
 router.post('/auth', controller.register)
 router.delete('/auth', authMiddleware, controller.delete)
 
