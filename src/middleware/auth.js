@@ -1,6 +1,8 @@
 const jwt = require('jsonwebtoken');
 const statusCode = require('../constants/statusCode');
+const statusError = require('../constants/statusError');
 const logger = require('../util/logger');
+const webError = require('../model/web/webError')
 
 const verifyToken = (req, res, next) => {
     logger.info("Entering in verifyToken")
@@ -8,13 +10,15 @@ const verifyToken = (req, res, next) => {
       req.body.token || req.query.token || req.headers["api-key"];
   
     if (!token) {
-        return new WebError(statusCode.UNAUTHORIZED, statusError.NO_TOKEN_PROVIDED).toJson()
+        response = webError.generateWebError(statusCode.UNAUTHORIZED, statusError.NO_TOKEN_PROVIDED)
+        return res.status(statusCode.UNAUTHORIZED).send(response)
     }
     try {
       const decoded = jwt.verify(token, process.env.TOKEN_KEY);
       req.user = decoded;
     } catch (err) {
-        return new WebError(statusCode.UNAUTHORIZED, statusError.INVALID_TOKEN).toJson()
+        response = webError.generateWebError(statusCode.UNAUTHORIZED, statusError.INVALID_TOKEN)
+        return res.status(statusCode.UNAUTHORIZED).send(response)
     }
     return next();
   };
