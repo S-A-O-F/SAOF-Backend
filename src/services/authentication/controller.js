@@ -11,7 +11,7 @@ module.exports = {
         logger.info("Requested login")
 
         // Declare response
-        var response
+        let response
 
         try {
             // Check if body is not empty
@@ -70,7 +70,7 @@ module.exports = {
         logger.info("Requested register")
 
         // Declare response
-        var response
+        let response
 
         try {
             // Check if body is not empty
