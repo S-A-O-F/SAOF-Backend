@@ -12,24 +12,24 @@ En los próximos apartados se explicará el funcionamiento del backend por cada 
 El módulo de autenticación de usuarios se encarga de realizar todo lo necesario para mantener un control. Todo lo relacionado con autencación y registro de usuarios se procesará mediante la ruta `/auth`.
 
 ### Registrar usuario
-Para poder registrar un usuario será necesario enviar un JSON que contenga el email, la contraseña y la contraseña repetida para verificar que coinciden ambas. Podemos ver un ejemplo del JSON que se espera recibir en la siguiente imagen:
+Para poder registrar un usuario será necesario enviar un JSON que contenga el email, la contraseña y la contraseña repetida mediante un método `POST`. Podemos ver un ejemplo del JSON que se espera recibir en la siguiente imagen:
 
 Si se ha registrado de forma correcta el usuario, la respuesta que devolverá el endpoint tendrá estatus 201 y se devolverá el usuario generado en formato JSON como podemos ver en la siguiente imagen: 
 
 ### Autenticar usuario
-Para poder autenticar un usuario será necesario enviar un JSON que contenga el email y la contraseña. Podemos ver un ejemplo del JSON que se espera recibir en la siguiente imagen:
+Para poder autenticar un usuario será necesario enviar un JSON que contenga el email y la contraseña mediante un método `GET`. Podemos ver un ejemplo del JSON que se espera recibir en la siguiente imagen:
 
 Si se ha autenticado de forma correcta el usuario, la respuesta que devolverá el endpoint tendrá estatus 200 y se devolverá el usuario obtenido de la base de datos en formato JSON como podemos ver en la siguiente imagen: 
 
 ### Borrar usuario
-Para poder dar de baja a un usuario será necesario enviar un JSON que contenga unicamente el email. Podemos ver un ejemplo del JSON que se espera recibir en la siguiente imagen:
+Para poder dar de baja a un usuario será necesario enviar un JSON que contenga unicamente el email mediante un método `DELETE`. Podemos ver un ejemplo del JSON que se espera recibir en la siguiente imagen:
 
 Previamente el usuario deberá estar autenticado y disponer de su correspondiente JWT. Se deberá enviar en la cabecera de la petición utilizando el identificador `api-key`. Podemos ver un ejemplo en la siguiente imagen: 
 
 Si se ha autenticado de forma correcta el usuario, la respuesta que devolverá el endpoint tendrá estatus 200 y se devolverá el usuario obtenido de la base de datos en formato JSON como podemos ver en la siguiente imagen: 
 
 ### Modificar un usuario
-Para poder modificar un usuario será necesario enviar un JSON que contenga toda la información actualizada del propio usuario. Podemos ver un ejemplo del JSON que se espera recibir en la siguiente imagen:
+Para poder modificar un usuario será necesario enviar un JSON que contenga toda la información actualizada del propio usuario mediante un método `PUT`. Podemos ver un ejemplo del JSON que se espera recibir en la siguiente imagen:
 
 Previamente el usuario deberá estar autenticado y disponer de su correspondiente JWT. Se deberá enviar en la cabecera de la petición utilizando el identificador `api-key`. Podemos ver un ejemplo en la siguiente imagen: 
 
