@@ -6,8 +6,8 @@ const app = require('../../../App')
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 
-const statusCode = require('../../../src/constants/statusCode')
-const statusError = require('../../../src/constants/statusError')
+const statusCode = require('../../../src/constants/web/statusCode')
+const statusError = require('../../../src/constants/web/statusError')
 
 chai.should();
 chai.use(chaiHttp)
