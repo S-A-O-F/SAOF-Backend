@@ -6,7 +6,7 @@ En este documento se redacta el funcionamiento del backend del sistema SAOF.
 ## 🔨 Instalación
 
 ## 🛠 ¿Como funciona?
-En los próximos apartados se explicará el funcionamiento del backend por cada caso de uso. Explicar todo con diagramas
+En los próximos apartados se explicará el funcionamiento del backend por cada caso de uso. A modo de esquema podemos ver el siguiente diagrama que explica, de forma visual, los módulos de la aplicación así como una vista general del sistema.
 
 ## Autenticación de usuarios
 El módulo de autenticación de usuarios se encarga de realizar todo lo necesario para mantener un control. Todo lo relacionado con autencación y registro de usuarios se procesará mediante la ruta `/auth`.
