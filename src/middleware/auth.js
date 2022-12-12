@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
-const statusCode = require('../constants/statusCode');
-const statusError = require('../constants/statusError');
+const statusCode = require('../constants/web/statusError');
+const statusError = require('../constants/web/statusError');
 const logger = require('../util/logger');
 const webError = require('../model/web/webError')
 
