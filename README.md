@@ -35,6 +35,8 @@ Previamente el usuario deberá estar autenticado y disponer de su correspondient
 
 Si se ha autenticado de forma correcta el usuario, la respuesta que devolverá el endpoint tendrá estatus 200 y se devolverá el usuario obtenido de la base de datos en formato JSON como podemos ver en la siguiente imagen: 
 
+## Gestión de fotografías
+
 ## 🆚 Registro de versiones
 La información sobre las diferentes versiones y funcionalidades de la aplicación se encuentra en el apartado [CHANGELOG](https://github.com/S-A-O-F/SAOF-Backend/blob/master/CHANGELOG.md)
 
