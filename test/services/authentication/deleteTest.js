@@ -73,4 +73,22 @@ describe('Authentication delete test: ', async () => {
             })
         done()
     });
+
+    /**
+     * Check the following things:
+     * - We send a JSON with an email and the endpoint returns a 203 status
+     * - Returns a JSON with the properties of the user
+     * - Active field must contains false
+     */
+    it('User deleted', (done) => {
+        chai.request(URL)
+            .delete(ENDPOINT)
+            .send({"email": "test@mail.com"})
+            .end((err, res) => {
+                res.should.have.status(statusCode.ACCEPTED)
+                res.body.should.be.a('object');
+                res.body.should.have.property('active').eql(false);
+            })
+        done()
+    });
 });
