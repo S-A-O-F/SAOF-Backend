@@ -1,8 +1,7 @@
 require('dotenv').config();
 
 const logger = require('../../../src/util/logger')
-
-const app = require('../../../App')
+const packageJson = require('../../../package.json')
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 
@@ -46,7 +45,9 @@ describe('Status test: ', async () => {
     /**
      * Check the following things
      * - The body is an object, not an array
-     * - The lenght is equal to 2 
+     * - The lenght is equal to 2
+     * - It has a field called "version"
+     * - It has a field called "author"
      */
     it('Check body', (done) => {
         chai.request(URL)
@@ -54,6 +55,8 @@ describe('Status test: ', async () => {
             .end((err, res) => {
                 res.body.should.be.a('object')
                 res.body.lenght.should.be.eq(2)
+                res.body.should.have.property('author').eql(packageJson.author);
+                res.body.should.have.property('version').eql(packageJson.version);
             })
         done()
     });

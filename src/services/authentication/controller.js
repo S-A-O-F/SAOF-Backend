@@ -1,6 +1,6 @@
 const logger = require('../../util/logger')
-const statusCode = require('../../constants/statusCode')
-const statusError = require('../../constants/statusError')
+const statusCode = require('../../constants/web/statusCode')
+const statusError = require('../../constants/web/statusError')
 
 const model = require('./model')
 const webError = require('../../model/web/webError')
@@ -11,7 +11,7 @@ module.exports = {
         logger.info("Requested login")
 
         // Declare response
-        var response
+        let response
 
         try {
             // Check if body is not empty
@@ -70,7 +70,7 @@ module.exports = {
         logger.info("Requested register")
 
         // Declare response
-        var response
+        let response
 
         try {
             // Check if body is not empty

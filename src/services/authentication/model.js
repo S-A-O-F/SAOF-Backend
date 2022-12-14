@@ -1,7 +1,3 @@
-const statusCode = require("../../constants/statusCode")
-const statusError = require("../../constants/statusError")
-const statusSuccess = require("../../constants/statusSuccess")
-const webError = require("../../model/web/webError")
 const encrypt = require("../../security/encrypt")
 const jwtManager = require("../../security/jwtManager")
 const logger = require("../../util/logger")
