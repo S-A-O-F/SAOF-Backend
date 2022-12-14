@@ -109,7 +109,7 @@ module.exports = {
             }
 
             // Check if the user already exists in the database
-            const databaseUser = await model.checkIfUserExists(email)
+            const databaseUser = await model.getUserByMail(email)
 
             if(databaseUser){
                 response = webError.generateWebError(statusCode.BAD_REQUEST, statusError.USER_ALREADY_EXISTS)
