@@ -1,6 +1,6 @@
 const logger = require('../../util/logger')
-const statusCode = require('../../constants/statusCode')
-const statusError = require('../../constants/statusError')
+const statusCode = require('../../constants/web/statusCode')
+const statusError = require('../../constants/web/statusError')
 
 const model = require('./model')
 const webError = require('../../model/web/webError')
