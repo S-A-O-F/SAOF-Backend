@@ -141,5 +141,52 @@ module.exports = {
             response = webError.generateWebError(statusCode.INTERNAL_SERVER_ERROR, statusError.UNEXPECTED_ERROR)
             return res.status(statusCode.INTERNAL_SERVER_ERROR).send(response)
         }
+    },
+
+    async delete(req, res) {
+
+        logger.info("Requested delete")
+
+        // Declare response
+        let response
+
+        try {
+            // Check if body is not empty
+            const isBodyEmpty = await model.checkRequestBodyDelete(req.body)
+
+            if(isBodyEmpty){
+                logger.info("The request body is empty")
+                response = webError.generateWebError(statusCode.BAD_REQUEST, statusError.NO_EMAIL_PROVIDED)
+                return res.status(statusCode.BAD_REQUEST).send(response)
+            }     
+
+            // Check if user exists
+            const email = req.body.email
+            const user = await model.getUserByMail(email)
+
+            if(!user){
+                logger.info("User with email " + email + " not founded")
+                response = webError.generateWebError(statusCode.BAD_REQUEST, statusError.USER_DOESNT_EXISTS)
+                return res.status(statusCode.BAD_REQUEST).send(response)
+            }
+
+            // Delete the user
+            const isUserDeleted = await model.deleteUser(user)
+
+            if(!isUserDeleted){
+                logger.info("User with email " + email + " can not be deleted")
+                response = webError.generateWebError(statusCode.BAD_REQUEST, statusError.USER_NOT_DELETED)
+                return res.status(statusCode.BAD_REQUEST).send(response)
+            }
+
+            user.active = false
+
+            return res.status(statusCode.ACCEPTED).send(user)
+
+        } catch (error) {
+            logger.error(error)
+            response = webError.generateWebError(statusCode.INTERNAL_SERVER_ERROR, statusError.UNEXPECTED_ERROR)
+            return res.status(statusCode.INTERNAL_SERVER_ERROR).send(response)
+        }
     }
 }

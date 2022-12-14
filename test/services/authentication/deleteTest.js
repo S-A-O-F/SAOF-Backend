@@ -2,6 +2,8 @@ require('dotenv').config();
 
 const logger = require('../../../src/util/logger')
 
+const mongo = require('../../../src/config/database')
+
 const app = require('../../../App')
 const chai = require('chai');
 const chaiHttp = require('chai-http');
@@ -19,112 +21,55 @@ const URL = process.env.URL
 // Disable the logs
 logger.silent = true
 
-describe('Authentication login test: ', async () => {
-    
+describe('Authentication delete test: ', async () => {
+
+    /**
+     * 
+     
+    beforeEach((done), async () => {
+        mongo.connect()
+        mongo.drop("userTests")
+        await User.create({
+            email: "example@mail.com",
+            password: "11223344.."
+        })
+        done()
+    });
+    */
+
     /**
      * Check the following things:
-     * - We send no JSON and the endpoint returns a 400 status
-     * - Returns a JSON with the properties "error" and "status"
-     * - Error field must contains NO_CREDENTIALS_PROVIDED constant
-     * - Status field must be BAD_REQUEST 
+     * - We send a JSON with no email and the endpoint returns a 400 status
+     * - Returns a JSON with the properties "response"
+     * - Response field must contains NO_EMAIL_PROVIDED constant
      */
-    it('No JSON sended', (done) => {
+    it('No body sended', (done) => {
         chai.request(URL)
-            .get(ENDPOINT)
+            .delete(ENDPOINT)
             .send()
             .end((err, res) => {
                 res.should.have.status(statusCode.BAD_REQUEST)
                 res.body.should.be.a('object');
-                res.body.should.have.property('response').eql(statusError.NO_CREDENTIALS_PROVIDED);
+                res.body.should.have.property('response').eql(statusError.NO_EMAIL_PROVIDED);
             })
         done()
     });
 
     /**
      * Check the following things:
-     * - We send a JSON only with the email field 
-     *   and the endopoint returns a 400 status
-     * - Returns a JSON with the properties "error" and "status"
-     * - Error field must contains NO_CREDENTIALS_PROVIDED constant
-     * - Status field must be BAD_REQUEST  
+     * - We send a JSON with a email that is not registered in the database 
+     *   and the endpoint returns a 400 status
+     * - Returns a JSON with the properties "response"
+     * - Response field must contains USER_DOESNT_EXISTS constant
      */
-    it('Only email sended', (done) => {
+    it('User does not exist', (done) => {
         chai.request(URL)
-            .get(ENDPOINT)
-            .send({
-                "email": "example@mail.com"
-            })
+            .delete(ENDPOINT)
+            .send({"email": "notexists@mail.com"})
             .end((err, res) => {
                 res.should.have.status(statusCode.BAD_REQUEST)
                 res.body.should.be.a('object');
-                res.body.should.have.property('response').eql(statusError.NO_CREDENTIALS_PROVIDED);
-            })
-        done()
-    });
-
-    /**
-     * Check the following things:
-     * - We send a JSON but the email doesn´t contains an @
-     *   and the endopoint returns a 400 status
-     * - Returns a JSON with the properties "error" and "status"
-     * - Error field must contains NOT_VALID_EMAIL constant
-     * - Status field must be BAD_REQUEST  
-     */
-    it('The email not contains an @', (done) => {
-        chai.request(URL)
-            .get(ENDPOINT)
-            .send({
-                "email": "examplemail.com",
-                "password": "JohnDoe73.."
-            })
-            .end((err, res) => {
-                res.should.have.status(statusCode.BAD_REQUEST)
-                res.body.should.be.a('object');
-                res.body.should.have.property('response').eql(statusError.NOT_VALID_EMAIL);
-            })
-        done()
-    });
-
-    /**
-     * Check the following things:
-     * - We send a JSON but the email doesn´t contains a .
-     *   and the endopoint returns a 400 status
-     * - Returns a JSON with the properties "error" and "status"
-     * - Error field must contains NOT_VALID_EMAIL constant
-     * - Status field must be BAD_REQUEST  
-     */
-    it('Check only email not .', (done) => {
-        chai.request(URL)
-            .get(ENDPOINT)
-            .send({
-                "email": "example@mailcom",
-                "password": "JohnDoe73.."
-            })
-            .end((err, res) => {
-                res.should.have.status(statusCode.BAD_REQUEST)
-                res.body.should.be.a('object');
-                res.body.should.have.property('response').eql(statusError.NOT_VALID_EMAIL);
-            })
-        done()
-    });
-
-    /**
-     * Check the following things:
-     * - We send a JSON only with the email field 
-     *   and the endopoint returns a 400 status
-     * - Returns a JSON with the properties "error" and "status"
-     * - Error field must contains NO_CREDENTIALS_PROVIDED constant
-     * - Status field must be BAD_REQUEST  
-     */
-    it('Only password sended', (done) => {
-        chai.request(URL)
-            .get(ENDPOINT)
-            .send({
-                "password": 1234
-            })
-            .end((err, res) => {
-                res.body.should.be.a('object');
-                res.body.should.have.property('response').eql(statusError.NO_CREDENTIALS_PROVIDED);
+                res.body.should.have.property('response').eql(statusError.USER_DOESNT_EXISTS);
             })
         done()
     });
