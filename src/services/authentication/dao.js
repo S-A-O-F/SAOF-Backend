@@ -15,5 +15,10 @@ module.exports = {
             email: email.toLowerCase().trim(),
             password: password
         })
+    },
+
+    async deleteUser(user){
+        logger.info("Entering in deleteUser")
+        return await User.updateOne(user, {"active": false})
     }
 }

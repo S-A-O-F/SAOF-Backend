@@ -21,6 +21,11 @@ module.exports = {
         return !email || !password || !repeatPassword
     },
 
+    async checkRequestBodyDelete(body){
+        logger.info("Entering in checkRequestBodyDelete")
+        return !body.email
+    },
+
     async checkRepeatPassword(password, repeatPassword){
         logger.info("Entering in checkRepeatPassword")
         return repeatPassword == password
@@ -75,5 +80,10 @@ module.exports = {
         logger.info("Entering in createUserByMail")
         const hashedPassword = encrypt.hashText(password)
         return await dao.createUserByEmail(email, hashedPassword)
+    },
+
+    async deleteUser(user){
+        logger.info("Entering in deleteUser")
+        return await dao.deleteUser(user)
     }
 }

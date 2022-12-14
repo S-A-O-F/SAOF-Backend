@@ -6,5 +6,6 @@ const router = express.Router()
 
 router.get('/auth', controller.login)
 router.post('/auth', controller.register)
+router.delete('/auth', authMiddleware, controller.delete)
 
 module.exports = router
