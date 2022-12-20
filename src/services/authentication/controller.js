@@ -55,8 +55,17 @@ module.exports = {
 
             // Assign JWT to the user
             user.token = generatedToken
+            logger.debug("User token generated: " + user.token)
 
-            return res.status(statusCode.SUCCESS).send(user)
+            // Save token in the database
+            const userSaved = await model.updateUser(user)
+
+            if (!userSaved){
+                response = webError.generateWebError(statusCode.INTERNAL_SERVER_ERROR, statusError.ERROR_UPDATING_TOKEN)
+                return res.status(statusCode.INTERNAL_SERVER_ERROR).send(response)
+            }
+
+            return res.status(statusCode.OK).send(user)
 
         } catch (error) {
             logger.error(error)
@@ -133,6 +142,15 @@ module.exports = {
 
             // Assign JWT to the user
             user.token = generatedToken
+            logger.debug("User token generated: " + user.token)
+
+            // Save token in the database
+            const userSaved = await model.updateUser(user)
+
+            if (!userSaved){
+                response = webError.generateWebError(statusCode.INTERNAL_SERVER_ERROR, statusError.ERROR_UPDATING_TOKEN)
+                return res.status(statusCode.INTERNAL_SERVER_ERROR).send(response)
+            }
 
             return res.status(statusCode.CREATED).send(user)
 
