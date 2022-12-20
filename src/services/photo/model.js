@@ -15,22 +15,24 @@ module.exports = {
         
         let listPhotoId = []
 
-        await files.forEach(async (file) => {
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
             const photoSaved = await dao.savePhoto(file)
-            const id = photoSaved._id
+            const id = photoSaved._id.toString()
             logger.debug(id) 
-            listPhotoId.push(id)          
-        });
+            listPhotoId.push(id)  
+        }
 
         return listPhotoId
     },
 
-    addPhotoIds(user, listIds){
+    async addPhotoIds(user, listIds){
         logger.info("Entering in addPhotoIds")
         
-        listIds.forEach(id =>{
+        for (let i = 0; i < listIds.length; i++) {
+            const id = listIds[i];
             user.listPhotos.push(id)
-        })
+        }
 
         return user
     },

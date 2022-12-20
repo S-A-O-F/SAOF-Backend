@@ -43,7 +43,7 @@ module.exports = {
                 return res.status(statusCode.BAD_REQUEST).send(response)
             }
 
-            user = model.addPhotoIds(user, listIdPhotos)
+            user = await model.addPhotoIds(user, listIdPhotos)
             logger.debug(user._id)
             logger.debug(listIdPhotos[0])
             logger.debug(user.listPhotos)
