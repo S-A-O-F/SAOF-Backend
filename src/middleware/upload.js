@@ -12,6 +12,6 @@ exports.setUpUpload = () =>
     },
     filename: function (req, file, cb) {
         const originalFileName = file.originalname
-        cb(null,  Date.now() + "-" + originalFileName)
+        cb(null, Date.now() + "-" + originalFileName)
     }
   })
