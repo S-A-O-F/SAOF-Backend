@@ -10,12 +10,33 @@ module.exports = {
         return await dao.getUserByToken(token)
     },
     
-    async savePhotos(user, files){
+    async savePhotos(files){
         logger.info("Entering in savePhotos")
         
-        files.forEach(async (file) => {
-            const photoId = await dao.savePhoto(file)
-            
+        let listPhotoId = []
+
+        await files.forEach(async (file) => {
+            const photoSaved = await dao.savePhoto(file)
+            const id = photoSaved._id
+            logger.debug(id) 
+            listPhotoId.push(id)          
         });
+
+        return listPhotoId
+    },
+
+    addPhotoIds(user, listIds){
+        logger.info("Entering in addPhotoIds")
+        
+        listIds.forEach(id =>{
+            user.listPhotos.push(id)
+        })
+
+        return user
+    },
+
+    async updateUser(user){
+        logger.info("Entering in updateUser")
+        return await dao.updateUser(user)
     }
 }

@@ -35,7 +35,20 @@ module.exports = {
             }
 
             // Save the photos in the server
-            const listIdPhotos = await model.savePhotos(user, req.files)
+            const listIdPhotos = await model.savePhotos(req.files)
+
+            if(!listIdPhotos){
+                logger.info("No photo was saved")
+                response = webError.generateWebError(statusCode.BAD_REQUEST, statusError.USER_DOESNT_EXISTS)
+                return res.status(statusCode.BAD_REQUEST).send(response)
+            }
+
+            user = model.addPhotoIds(user, listIdPhotos)
+            logger.debug(user._id)
+            logger.debug(listIdPhotos[0])
+            logger.debug(user.listPhotos)
+
+            user = await model.updateUser(user)
 
             return res.status(statusCode.OK).send(user)
 

@@ -8,6 +8,7 @@ const photoSchema = new mongoose.Schema({
     tmpPath: {type: String, default: null},
     encoding: {type: String, default: null},
     size: {type: Number, default: null},
+    extension: {type: String, default: null},
     createdAt: {type: Date, default: Date.now()},
     updatedAt: {type: Date, default: Date.now()},
     active: {type: Boolean, default: true},

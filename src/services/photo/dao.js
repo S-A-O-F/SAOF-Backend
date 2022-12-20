@@ -17,6 +17,14 @@ module.exports = {
             tmpPath: photo.path,
             encoding: photo.encoding,
             size: photo.size
+            //extension: photo.filename.split(".")[-1].to
+        })
+    },
+
+    async updateUser(user){
+        logger.info("Entering in updateUser")
+        return await User.findByIdAndUpdate(user, {
+            listPhotos: user.listPhotos
         })
     }
 }
