@@ -19,6 +19,16 @@ module.exports = {
 
     async deleteUser(user){
         logger.info("Entering in deleteUser")
-        return await User.updateOne(user, {"active": false})
+        return await User.findByIdAndUpdate(user, {
+            active: false
+        })
+    },
+
+    async updateUser(user){
+        logger.info("Entering in updateUser")
+        logger.debug(user._id)
+        return await User.findByIdAndUpdate(user, {
+            token: user.token
+        })
     }
 }

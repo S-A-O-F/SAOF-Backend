@@ -14,5 +14,6 @@ module.exports = Object.freeze({
     INVALID_TOKEN: "Invalid token",
     UNEXPECTED_ERROR: "An unexpected error occurred",
     NO_EMAIL_PROVIDED: "The email was not provided",
-    USER_NOT_DELETED: "The user was not deleted"
+    USER_NOT_DELETED: "The user was not deleted",
+    ERROR_UPDATING_TOKEN: "The user token was not updated"
 });

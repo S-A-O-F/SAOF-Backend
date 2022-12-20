@@ -85,5 +85,10 @@ module.exports = {
     async deleteUser(user){
         logger.info("Entering in deleteUser")
         return await dao.deleteUser(user)
+    },
+
+    async updateUser(user){
+        logger.info("Entering in updateUser")
+        return await dao.updateUser(user)
     }
 }
