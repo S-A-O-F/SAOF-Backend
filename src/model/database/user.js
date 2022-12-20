@@ -9,6 +9,7 @@ const userSchema = new mongoose.Schema({
     lastActiveAt: {type: Date, default: Date.now()},
     creationDate: {type: Date, default: Date.now()},
     active: {type: Boolean, default: true},
+    listPhotos: {type: [], default: null }
 })
 
 module.exports = mongoose.model(collection, userSchema)

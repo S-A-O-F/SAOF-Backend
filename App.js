@@ -10,7 +10,8 @@ const mongo = require('./src/config/database')
 mongo.connect()
 
 // Configure express
-const express = require('express')
+const express = require('express');
+
 const app = express()
 const port = process.env.PORT
 
@@ -20,6 +21,7 @@ app.use(express.json());
 // Define the routes
 app.use(require('./src/services/authentication/router'))
 app.use(require('./src/services/status/router'))
+app.use(require('./src/services/photo/router'))
 
 // Start the server
 app.listen(port, () => {
