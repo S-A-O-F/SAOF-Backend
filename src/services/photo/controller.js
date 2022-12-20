@@ -35,8 +35,7 @@ module.exports = {
             }
 
             // Save the photos in the server
-
-            // Assign the photos to the user
+            const listIdPhotos = await model.savePhotos(user, req.files)
 
             return res.status(statusCode.OK).send(user)
 
